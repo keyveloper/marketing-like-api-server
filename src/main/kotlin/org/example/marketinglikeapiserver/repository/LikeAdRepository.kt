@@ -4,7 +4,6 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.example.marketinglikeapiserver.dto.LikeAdEntity
 import org.example.marketinglikeapiserver.dto.LikeAdMetadata
 import org.example.marketinglikeapiserver.dto.SaveLikeAd
-import org.example.marketinglikeapiserver.enums.EntityStatus
 import org.example.marketinglikeapiserver.enums.LikeStatus
 import org.example.marketinglikeapiserver.exception.NotFoundLikeAdEntityException
 import org.example.marketinglikeapiserver.table.LikeAdTable
@@ -12,6 +11,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Repository
+import java.util.UUID
 
 @Repository
 class LikeAdRepository {
@@ -23,18 +23,16 @@ class LikeAdRepository {
                 influencerId = saveLikeAd.influencerId
                 advertisementId = saveLikeAd.advertisementId
                 likeStatus = saveLikeAd.likeStatus
-                entityStatus = saveLikeAd.entityStatus
             }
             LikeAdMetadata.fromEntity(entity)
         }
     }
 
-    fun switch(influencerId: String, advertisementId: Long): LikeAdMetadata {
+    fun switch(influencerId: UUID, advertisementId: Long): LikeAdMetadata {
         return transaction {
             val entity = LikeAdEntity.find {
                 (LikeAdTable.influencerId eq influencerId) and
-                (LikeAdTable.advertisementId eq advertisementId) and
-                (LikeAdTable.entityStatus eq EntityStatus.ACTIVE)
+                (LikeAdTable.advertisementId eq advertisementId)
             }.firstOrNull() ?: throw NotFoundLikeAdEntityException(
                 logics = "LikeAdRepository.switch: entity not found for influencerId=$influencerId, advertisementId=$advertisementId"
             )
@@ -47,27 +45,24 @@ class LikeAdRepository {
     fun findByAdvertisementId(advertisementId: Long): List<LikeAdMetadata> {
         return transaction {
             LikeAdEntity.find {
-                (LikeAdTable.advertisementId eq advertisementId) and
-                (LikeAdTable.entityStatus eq EntityStatus.ACTIVE)
+                LikeAdTable.advertisementId eq advertisementId
             }.map { LikeAdMetadata.fromEntity(it) }
         }
     }
 
-    fun findByInfluencerId(influencerId: String): List<LikeAdMetadata> {
+    fun findByInfluencerId(influencerId: UUID): List<LikeAdMetadata> {
         return transaction {
             LikeAdEntity.find {
-                (LikeAdTable.influencerId eq influencerId) and
-                (LikeAdTable.entityStatus eq EntityStatus.ACTIVE)
+                LikeAdTable.influencerId eq influencerId
             }.map { LikeAdMetadata.fromEntity(it) }
         }
     }
 
-    fun findByInfluencerIdAndAdvertisementId(influencerId: String, advertisementId: Long): LikeAdMetadata? {
+    fun findByInfluencerIdAndAdvertisementId(influencerId: UUID, advertisementId: Long): LikeAdMetadata? {
         return transaction {
             LikeAdEntity.find {
                 (LikeAdTable.influencerId eq influencerId) and
-                (LikeAdTable.advertisementId eq advertisementId) and
-                (LikeAdTable.entityStatus eq EntityStatus.ACTIVE)
+                (LikeAdTable.advertisementId eq advertisementId)
             }.firstOrNull()?.let { LikeAdMetadata.fromEntity(it) }
         }
     }

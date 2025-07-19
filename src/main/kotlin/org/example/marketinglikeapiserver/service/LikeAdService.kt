@@ -3,10 +3,10 @@ package org.example.marketinglikeapiserver.service
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.example.marketinglikeapiserver.dto.LikeOrSwitchResult
 import org.example.marketinglikeapiserver.dto.SaveLikeAd
-import org.example.marketinglikeapiserver.enums.EntityStatus
 import org.example.marketinglikeapiserver.enums.LikeStatus
 import org.example.marketinglikeapiserver.repository.LikeAdRepository
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class LikeAdService(
@@ -14,7 +14,7 @@ class LikeAdService(
 ) {
     private val logger = KotlinLogging.logger {}
 
-    fun likeOrSwitch(influencerId: String, advertisementId: Long): LikeOrSwitchResult {
+    fun likeOrSwitch(influencerId: UUID, advertisementId: Long): LikeOrSwitchResult {
         logger.info { "LikeAdService.likeOrSwitch: influencerId=$influencerId, advertisementId=$advertisementId" }
 
         val existingLikeAd = likeAdRepository.findByInfluencerIdAndAdvertisementId(influencerId, advertisementId)
@@ -31,8 +31,7 @@ class LikeAdService(
             val saveLikeAd = SaveLikeAd.of(
                 influencerId = influencerId,
                 advertisementId = advertisementId,
-                likeStatus = LikeStatus.LIKE,
-                entityStatus = EntityStatus.ACTIVE
+                likeStatus = LikeStatus.LIKE
             )
             val savedLikeAd = likeAdRepository.save(saveLikeAd)
             LikeOrSwitchResult.of(

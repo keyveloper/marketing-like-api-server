@@ -1,24 +1,22 @@
 package org.example.marketinglikeapiserver.dto
 
-import org.example.marketinglikeapiserver.enums.EntityStatus
 import org.example.marketinglikeapiserver.enums.LikeStatus
+import java.util.UUID
 
 data class LikeAdMetadata(
     val id: Long,
-    val influencerId: String,
+    val influencerId: UUID,
     val advertisementId: Long,
     val likeStatus: LikeStatus,
-    val entityStatus: EntityStatus,
     val createdAt: Long,
     val lastModifiedAt: Long
 ) {
     companion object {
         fun of(
             id: Long,
-            influencerId: String,
+            influencerId: UUID,
             advertisementId: Long,
             likeStatus: LikeStatus,
-            entityStatus: EntityStatus,
             createdAt: Long,
             lastModifiedAt: Long
         ): LikeAdMetadata {
@@ -27,7 +25,6 @@ data class LikeAdMetadata(
                 influencerId = influencerId,
                 advertisementId = advertisementId,
                 likeStatus = likeStatus,
-                entityStatus = entityStatus,
                 createdAt = createdAt,
                 lastModifiedAt = lastModifiedAt
             )
@@ -39,7 +36,6 @@ data class LikeAdMetadata(
                 influencerId = entity.influencerId,
                 advertisementId = entity.advertisementId,
                 likeStatus = entity.likeStatus,
-                entityStatus = entity.entityStatus,
                 createdAt = entity.createAt,
                 lastModifiedAt = entity.lastModifiedAt
             )

@@ -3,16 +3,16 @@ package org.example.marketinglikeapiserver.dto
 import org.example.marketinglikeapiserver.enums.LikeStatus
 
 data class LikeOrSwitchResult(
-    val likeAdMetadata: LikeAdMetadata,
+    val likeAd: LikeAd,
     val likeStatus: LikeStatus
 ) {
     companion object {
         fun of(
-            likeAdMetadata: LikeAdMetadata,
+            likeAd: LikeAd,
             likeStatus: LikeStatus
         ): LikeOrSwitchResult {
             return LikeOrSwitchResult(
-                likeAdMetadata = likeAdMetadata,
+                likeAd = likeAd,
                 likeStatus = likeStatus
             )
         }

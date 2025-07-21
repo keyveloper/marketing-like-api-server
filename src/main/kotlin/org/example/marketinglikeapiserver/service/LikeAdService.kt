@@ -23,7 +23,7 @@ class LikeAdService(
             logger.info { "LikeAdService.likeOrSwitch: existing like found, switching status" }
             val updatedLikeAd = likeAdRepository.switch(influencerId, advertisementId)
             LikeOrSwitchResult.of(
-                likeAdMetadata = updatedLikeAd,
+                likeAd = updatedLikeAd,
                 likeStatus = updatedLikeAd.likeStatus
             )
         } else {
@@ -35,7 +35,7 @@ class LikeAdService(
             )
             val savedLikeAd = likeAdRepository.save(saveLikeAd)
             LikeOrSwitchResult.of(
-                likeAdMetadata = savedLikeAd,
+                likeAd = savedLikeAd,
                 likeStatus = savedLikeAd.likeStatus
             )
         }

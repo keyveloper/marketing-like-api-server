@@ -1,76 +1,44 @@
 ### Like Ad API Test
 
+@influencerId = 14a80d8c-d021-70a9-ba28-5bab07c853c5
+@baseUrl = http://localhost:8083
+
 ### Test 1: Like an advertisement (Upsert - First time)
-POST http://localhost:8083/api/v1/like/ad
+POST {{baseUrl}}/api/v1/like/ad
 Content-Type: application/json
 
 {
-  "influencerId": "123e4567-e89b-12d3-a456-426614174000",
-  "advertisementId": 1
+  "influencerId": "{{influencerId}}",
+  "advertisementId": 15
 }
 
 ### Test 2: Like the same advertisement again (Upsert - Update)
-POST http://localhost:8083/api/v1/like/ad
+POST {{baseUrl}}/api/v1/like/ad
 Content-Type: application/json
 
 {
-  "influencerId": "123e4567-e89b-12d3-a456-426614174000",
-  "advertisementId": 1
+  "influencerId": "{{influencerId}}",
+  "advertisementId": 15
 }
 
 ### Test 3: Unlike an advertisement
-POST http://localhost:8083/api/v1/like/ad/unlike
+POST {{baseUrl}}/api/v1/like/ad/unlike
 Content-Type: application/json
 
 {
-  "influencerId": "123e4567-e89b-12d3-a456-426614174000",
-  "advertisementId": 1
+  "influencerId": "{{influencerId}}",
+  "advertisementId": 15
 }
 
-### Test 4: Unlike non-existing or already unliked advertisement (Should fail)
-POST http://localhost:8083/api/v1/like/ad/unlike
-Content-Type: application/json
-
-{
-  "influencerId": "123e4567-e89b-12d3-a456-426614174000",
-  "advertisementId": 1
-}
-
-### Test 5: Like another advertisement
-POST http://localhost:8083/api/v1/like/ad
-Content-Type: application/json
-
-{
-  "influencerId": "123e4567-e89b-12d3-a456-426614174000",
-  "advertisementId": 2
-}
-
-### Test 6: Different influencer likes advertisement 1
-POST http://localhost:8083/api/v1/like/ad
-Content-Type: application/json
-
-{
-  "influencerId": "987e6543-e21b-12d3-a456-426614174999",
-  "advertisementId": 1
-}
-
-### Test 7: Different influencer likes advertisement 2
-POST http://localhost:8083/api/v1/like/ad
-Content-Type: application/json
-
-{
-  "influencerId": "987e6543-e21b-12d3-a456-426614174999",
-  "advertisementId": 2
-}
 
 ### Test 8: Get all liked advertisements by influencer
-GET http://localhost:8083/api/v1/like/influencer/123e4567-e89b-12d3-a456-426614174000
+GET {{baseUrl}}/api/v1/like/influencer/{{influencerId}}
 
 ### Test 9: Get all liked advertisements by another influencer
 GET http://localhost:8083/api/v1/like/influencer/987e6543-e21b-12d3-a456-426614174999
 
 ### Test 10: Get all influencers who liked advertisement 1
-GET http://localhost:8083/api/v1/like/advertisement/1
+GET http://localhost:8083/api/v1/like/advertisement/14
 
 ### Test 11: Get all influencers who liked advertisement 2
 GET http://localhost:8083/api/v1/like/advertisement/2

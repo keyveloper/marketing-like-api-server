@@ -8,4 +8,9 @@ object LikeAdTable : BaseDateLongIdTable("like_ad") {
     val influencerId: Column<UUID> = uuid("influencer_id")
     val advertisementId: Column<Long> = long("advertisement_id")
     val likeStatus: Column<LikeStatus> = enumerationByName("like_status", 20, LikeStatus::class)
+
+    init {
+        uniqueIndex("uni_idx_influ_ad", influencerId, advertisementId)
+    }
 }
+

@@ -1,7 +1,7 @@
-### Like or Switch API Test
+### Like Ad API Test
 
-### Test 1: Create new like (First time like)
-POST http://localhost:8083/api/v1/like-ad/like-or-switch
+### Test 1: Like an advertisement (Upsert - First time)
+POST http://localhost:8083/api/v1/like/ad
 Content-Type: application/json
 
 {
@@ -9,8 +9,8 @@ Content-Type: application/json
   "advertisementId": 1
 }
 
-### Test 2: Switch existing like to unlike
-POST http://localhost:8083/api/v1/like-ad/like-or-switch
+### Test 2: Like the same advertisement again (Upsert - Update)
+POST http://localhost:8083/api/v1/like/ad
 Content-Type: application/json
 
 {
@@ -18,8 +18,8 @@ Content-Type: application/json
   "advertisementId": 1
 }
 
-### Test 3: Switch back to like
-POST http://localhost:8083/api/v1/like-ad/like-or-switch
+### Test 3: Unlike an advertisement
+POST http://localhost:8083/api/v1/like/ad/unlike
 Content-Type: application/json
 
 {
@@ -27,8 +27,17 @@ Content-Type: application/json
   "advertisementId": 1
 }
 
-### Test 4: Create like for different advertisement
-POST http://localhost:8083/api/v1/like-ad/like-or-switch
+### Test 4: Unlike non-existing or already unliked advertisement (Should fail)
+POST http://localhost:8083/api/v1/like/ad/unlike
+Content-Type: application/json
+
+{
+  "influencerId": "123e4567-e89b-12d3-a456-426614174000",
+  "advertisementId": 1
+}
+
+### Test 5: Like another advertisement
+POST http://localhost:8083/api/v1/like/ad
 Content-Type: application/json
 
 {
@@ -36,11 +45,32 @@ Content-Type: application/json
   "advertisementId": 2
 }
 
-### Test 5: Create like with different influencer
-POST http://localhost:8083/api/v1/like-ad/like-or-switch
+### Test 6: Different influencer likes advertisement 1
+POST http://localhost:8083/api/v1/like/ad
 Content-Type: application/json
 
 {
   "influencerId": "987e6543-e21b-12d3-a456-426614174999",
   "advertisementId": 1
 }
+
+### Test 7: Different influencer likes advertisement 2
+POST http://localhost:8083/api/v1/like/ad
+Content-Type: application/json
+
+{
+  "influencerId": "987e6543-e21b-12d3-a456-426614174999",
+  "advertisementId": 2
+}
+
+### Test 8: Get all liked advertisements by influencer
+GET http://localhost:8083/api/v1/like/influencer/123e4567-e89b-12d3-a456-426614174000
+
+### Test 9: Get all liked advertisements by another influencer
+GET http://localhost:8083/api/v1/like/influencer/987e6543-e21b-12d3-a456-426614174999
+
+### Test 10: Get all influencers who liked advertisement 1
+GET http://localhost:8083/api/v1/like/advertisement/1
+
+### Test 11: Get all influencers who liked advertisement 2
+GET http://localhost:8083/api/v1/like/advertisement/2

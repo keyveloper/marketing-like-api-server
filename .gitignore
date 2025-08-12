@@ -38,3 +38,6 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+### Example ###
+src/main/kotlin/org/example/marketinglikeapiserver/aexample

@@ -1,6 +1,7 @@
 package org.example.marketinglikeapiserver.service
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.example.marketinglikeapiserver.dto.CheckLikedAdsByInfluencerIdResult
 import org.example.marketinglikeapiserver.dto.GetInfluencersByAdIdResult
 import org.example.marketinglikeapiserver.dto.GetLikedAdsByInfluencerIdResult
 import org.example.marketinglikeapiserver.dto.LikedAdvertisement
@@ -60,6 +61,22 @@ class LikeAdService(
             GetInfluencersByAdIdResult.of(
                 advertisementId = advertisementId,
                 influencerIds = likedAds.map { it.influencerId }
+            )
+        }
+    }
+
+    fun checkLikedAdsByInfluencerId(
+        influencerId: UUID,
+        advertisementIds: List<Long>
+    ): CheckLikedAdsByInfluencerIdResult {
+        return transaction {
+            val likedAds = likeAdRepository.findLikedAdsByInfluencerIdAndAdIds(
+                influencerId = influencerId,
+                advertisementIds = advertisementIds
+            )
+            CheckLikedAdsByInfluencerIdResult.of(
+                influencerId = influencerId,
+                likedAdvertisements = likedAds
             )
         }
     }

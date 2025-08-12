@@ -7,6 +7,7 @@ import org.example.marketinglikeapiserver.enums.LikeStatus
 import org.example.marketinglikeapiserver.exception.FailedLikeException
 import org.example.marketinglikeapiserver.table.LikeAdTable
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
@@ -70,6 +71,19 @@ class LikeAdRepository {
         return transaction {
             LikeAdEntity.find {
                 (LikeAdTable.advertisementId eq advertisementId) and
+                (LikeAdTable.likeStatus eq LikeStatus.LIKE)
+            }.map { LikedAdvertisement.of(it) }
+        }
+    }
+
+    fun findLikedAdsByInfluencerIdAndAdIds(
+        influencerId: UUID,
+        advertisementIds: List<Long>
+    ): List<LikedAdvertisement> {
+        return transaction {
+            LikeAdEntity.find {
+                (LikeAdTable.influencerId eq influencerId) and
+                (LikeAdTable.advertisementId inList advertisementIds) and
                 (LikeAdTable.likeStatus eq LikeStatus.LIKE)
             }.map { LikedAdvertisement.of(it) }
         }

@@ -71,4 +71,21 @@ class LikeAdController(
 
         return ResponseEntity.ok(response)
     }
+
+    @PostMapping("/advertisement/liked")
+    fun checkLikedAdsByInfluencerId(
+        @RequestBody request: CheckLikedAdsByInfluencerIdApiRequest
+    ): ResponseEntity<CheckLikedAdsByInfluencerIdResponseFromServer> {
+        logger.info { "LikeAdController.checkLikedAdsByInfluencerId: request=$request" }
+
+        val result = likeAdService.checkLikedAdsByInfluencerId(
+            influencerId = request.influencerId,
+            advertisementIds = request.advertisementIds
+        )
+
+        val response = CheckLikedAdsByInfluencerIdResponseFromServer.success(result)
+        logger.info { "LikeAdController.checkLikedAdsByInfluencerId: response=$response" }
+
+        return ResponseEntity.ok(response)
+    }
 }

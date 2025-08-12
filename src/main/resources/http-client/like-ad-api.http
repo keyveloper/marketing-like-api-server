@@ -49,5 +49,5 @@ Content-Type: application/json
 
 {
   "influencerId": "{{influencerId}}",
-  "advertisementIds": [14, 15, 16, 17]
+  "advertisementIds": [13, 14, 15, 16, 17]
 }
